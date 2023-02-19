@@ -2,27 +2,23 @@ package com.kim.dani.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.catalina.User;
 
 import javax.persistence.*;
-
-@Entity
 @Getter
 @Setter
-public class MemberV2 {
+@Entity
+public class Follower {
 
-    @Id //primarykey
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "USERNAME")
-    private String name;
-
-    @Column
-    private int age;
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    Users users;
 
     @ManyToOne
-    @JoinColumn(name="TEAM_ID")
-    private Team team;
+    @JoinColumn(name = "target_id")
+    Users userss;
 }
-
-

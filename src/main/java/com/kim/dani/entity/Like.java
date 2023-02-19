@@ -4,16 +4,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-
-@Entity
 @Getter
 @Setter
-public class Team {
+@Entity
+public class Like {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    Users users;
+
+    @ManyToOne
+    @JoinColumn(name = "board_id")
+    Board board;
 }

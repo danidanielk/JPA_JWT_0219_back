@@ -7,27 +7,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 
 @Component
 public class JwtTokenValidator {
 
-    @Value("${jwt.secret}")
-    private static String jwtSecret;
+//    @Value("${jwt.secret}")
+//    private static String jwtSecret;
+
+    private static String jwtSecret="daniel";
+    private static byte[] secret= Base64.getEncoder().encode(jwtSecret.getBytes());
 
 
-    public static Claims jwtValidation(String token) {
-        try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8))
-                    .parseClaimsJws(token)
-                    .getBody();
-            return claims;
-        } catch (JwtException e) {
-            return null;
-        }
-    }
 
     public String jwtGetUserId(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
@@ -35,12 +29,19 @@ public class JwtTokenValidator {
             return "Unauthorized1";
         }
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("jwt")) {
+            if (cookie.getName().equals("jwtt")) {
+
                 String token = cookie.getValue();
                 System.out.println(token+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-                Claims claims = jwtValidation(token);
-                String userid = claims.get("id", String.class);
-                return userid;
+                Claims claims = Jwts.parser()
+                        .setSigningKey(secret)
+                        .parseClaimsJws(token).getBody();
+                if (claims != null){
+                    String email = (String) claims.get("email");
+                    return email;
+                }else{
+                    return " null ";
+                }
             }
         }
         return "Unauthorized2";

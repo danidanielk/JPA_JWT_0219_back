@@ -6,18 +6,22 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+//    @Value("${jwt.secret}")
+//    private static String jwtSecret;
+
+    private static String jwtSecret="daniel";
+    private static byte[] secret= Base64.getEncoder().encode(jwtSecret.getBytes());
 
 
     public String generateToken(String email) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() );
+        Date now = new Date(System.currentTimeMillis());
+        Date expiryDate = new Date(System.currentTimeMillis()+60*30000);
 
         return Jwts.builder()
                 .setSubject(email)
@@ -25,7 +29,7 @@ public class JwtTokenProvider {
                 .setExpiration(expiryDate)
                 .claim("id","23")
                 .claim("email",email)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
@@ -33,8 +37,8 @@ public class JwtTokenProvider {
 //        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         String token = generateToken(email);
         System.out.println(token+"===========================");
-        Cookie cookie = new Cookie("jwt", token);
-        cookie.setMaxAge(60*1);
+        Cookie cookie = new Cookie("jwtt", token);
+        cookie.setMaxAge(60*10000);
         cookie.setHttpOnly(true); // Xss 방어
         cookie.setPath("/");
         res.addCookie(cookie);
