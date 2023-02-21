@@ -4,21 +4,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.validation.constraints.*;
+import javax.persistence.Entity;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class JoinDto {
-
-
-    @NotBlank(message = "이름을 입력해주세요")
-    @Size(min = 1, max = 10, message = "이름은 1~10자")
-    private String name;
-
-    @NotBlank(message = "휴대폰 번호를 입력해주세요")
-    private String phone;
+public class LoginDto {
 
     @NotBlank(message = "이메일을 입력해주세요")
     @Email
@@ -28,5 +24,6 @@ public class JoinDto {
     @Pattern(regexp = "^.*(?=^.{8,15}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$")
     @Size(min = 8,max = 15,message = "8~15자 이내")
     private String password;
+
 
 }

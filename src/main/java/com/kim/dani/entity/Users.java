@@ -4,9 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
+
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,4 +33,21 @@ public class Users {
 
     @Column(nullable = true)
     private String nickname;
+
+    @OneToMany(mappedBy = "users" , cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Board> board = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Comment> comment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Follower> follower = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Following> following = new ArrayList<>();
+
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<LikeYou> likeyou = new ArrayList<>();
+
+
 }

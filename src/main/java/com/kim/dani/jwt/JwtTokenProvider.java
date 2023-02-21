@@ -27,7 +27,6 @@ public class JwtTokenProvider {
                 .setSubject(email)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .claim("id","23")
                 .claim("email",email)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
@@ -37,7 +36,7 @@ public class JwtTokenProvider {
 //        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         String token = generateToken(email);
         System.out.println(token+"===========================");
-        Cookie cookie = new Cookie("jwtt", token);
+        Cookie cookie = new Cookie("jwttt", token);
         cookie.setMaxAge(60*10000);
         cookie.setHttpOnly(true); // Xss 방어
         cookie.setPath("/");
