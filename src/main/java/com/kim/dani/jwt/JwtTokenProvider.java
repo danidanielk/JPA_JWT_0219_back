@@ -36,7 +36,7 @@ public class JwtTokenProvider {
 //        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider();
         String token = generateToken(email);
         System.out.println(token+"===========================");
-        Cookie cookie = new Cookie("jwttt", token);
+        Cookie cookie = new Cookie("ddoken", token);
         cookie.setMaxAge(60*10000);
         cookie.setHttpOnly(true); // Xss 방어
         cookie.setPath("/");

@@ -9,6 +9,8 @@ public class Config implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000")
-				.allowedMethods("*").maxAge(24*3600);
+				.allowedMethods("*")
+                .allowCredentials(true)
+                .maxAge(24*3600);
     }
 }

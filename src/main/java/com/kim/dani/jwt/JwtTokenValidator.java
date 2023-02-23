@@ -23,13 +23,13 @@ public class JwtTokenValidator {
 
 
 
-    public String jwtGetUserId(HttpServletRequest req) {
+    public String jwtGetUserEmail(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
         if (cookies == null) {
-            return "Unauthorized1";
+            return null;
         }
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("jwtt")) {
+            if (cookie.getName().equals("ddoken")) {
 
                 String token = cookie.getValue();
                 System.out.println(token+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
@@ -40,11 +40,11 @@ public class JwtTokenValidator {
                     String email = (String) claims.get("email");
                     return email;
                 }else{
-                    return " null ";
+                    return null;
                 }
             }
         }
-        return "Unauthorized2";
+        return null;
     }
 
 

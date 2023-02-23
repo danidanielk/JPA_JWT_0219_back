@@ -10,16 +10,21 @@ import com.kim.dani.entity.Member;
 import com.kim.dani.entity.Users;
 import com.kim.dani.jwt.JwtTokenProvider;
 import com.kim.dani.jwt.JwtTokenValidator;
+import com.kim.dani.repository.BoardRepository;
 import com.kim.dani.repository.MemberRepository;
 import com.kim.dani.repository.TestRepository;
 import com.kim.dani.repository.UsersRepository;
+import com.kim.dani.service.BoardService;
 import com.kim.dani.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
+import org.apache.tomcat.util.http.fileupload.FileUpload;
+import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +32,9 @@ import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -39,17 +47,20 @@ public class UsersController {
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtTokenValidator jwtTokenValidator;
     private final UsersService usersService;
+    private final BoardService boardService;
     private final TestRepository testRepository;
     private final MemberRepository memberRepository;
 
-    @GetMapping("/login")
-    public String test(HttpServletResponse res){
-        return jwtTokenProvider.setTokenCookie(res , "dani");
-    }
+//    @GetMapping("/login")
+//    public String test(HttpServletResponse res){
+//        return jwtTokenProvider.setTokenCookie(res , "dani");
+//    }
 
     @GetMapping("/validation")
     public String test2(HttpServletRequest req){
-        return jwtTokenValidator.jwtGetUserId(req);
+
+        String email = jwtTokenValidator.jwtGetUserEmail(req);
+        return email;
     }
 
     @PostMapping("/join")
@@ -108,15 +119,8 @@ public class UsersController {
         memberRepository.delete(member);
     }
 
-    @PostMapping("/upload")
-    public void BoardUpload(@RequestPart("file")MultipartFile file,@RequestPart("title") String title,@RequestPart("content")String contents){
-
-        System.out.println(file.getOriginalFilename());
-        System.out.println(title);
-        System.out.println(contents);
 
 
-    }
 
 
 }
